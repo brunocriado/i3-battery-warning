@@ -64,7 +64,7 @@ PERCENT=`echo $(( $REM * 100 / $FULL ))`
 MESSAGE="Low battery warning, find charger"
 
 # set energy limit in percent, where warning should be displayed
-LIMIT="15"
+LIMIT="10"
 
 I3BAT_TMPDIR=$(mktemp --directory --tmpdir i3batwarn.XXX)
 NAGBARPIDFILE="$I3BAT_TMPDIR/nagbarpid_file"
@@ -74,12 +74,14 @@ NAGBARPIDFILE="$I3BAT_TMPDIR/nagbarpid_file"
 if [ $PERCENT -le "$(echo $LIMIT)" ] && [ "$STAT" == "Discharging" ]; then
   #chek if nagbarfile is empty: else open new - to avoid multiples
     if [ ! -s $NAGBARPIDFILE ] ; then
+        /usr/bin/i3-msg fullscreen disable &
         /usr/bin/i3-nagbar -m "$(echo $MESSAGE)" &
         echo $! > $NAGBARPIDFILE
     elif ps -e | grep $(cat $NAGBARPIDFILE) | grep "i3-nagbar"; then
         echo "pidfile in order, nothing to do"
     else
         rm $NAGBARPIDFILE
+        /usr/bin/i3-msg fullscreen disable &
         /usr/bin/i3-nagbar -m "$(echo $MESSAGE)" &
         echo $! > $NAGBARPIDFILE
     fi #else if, nagbarpid points to something else create new.

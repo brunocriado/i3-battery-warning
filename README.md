@@ -12,15 +12,7 @@ $ crontab -e
 
 Add the following line to check battery status every minute
 
-*/1 * * * * /PATH/TO/YOUR/SCRIPT/i3batwarn.sh
-
-If the need to trouble shoot arises one could pipe the cron job output to a file like
-
-*/1 * * * * /PATH/TO/YOUR/SCRIPT/i3batwarn.sh > /tmp/batterywarn.log
-
-If the script only works when invoked from terminal and not as a cronjob it might help to specify
-
-DISPLAY=:0
+*/1 * * * * env DISPLAY=:0 /PATH/TO/YOUR/SCRIPT/i3batwarn.sh
 
 in the cron tab (before calling this script).
 
@@ -28,6 +20,11 @@ screenshot
 ==========
 
 ![ScreenShot](screenshot.png)
+
+fork changes (Bruno Criado)
+===========================
+I usually use my web browser and terminal in fullscreen, so I've added i3-msg to disable fullscreen and show the
+warning.
 
 fork changes
 ============
